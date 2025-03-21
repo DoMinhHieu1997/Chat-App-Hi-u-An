@@ -20,6 +20,8 @@ app.use(cors({
 }));
 app.use(express.json());
 
+const userRoutes = require('./routes/userRoutes');
+app.use('/api/users', userRoutes);
 // Serve static files from uploads directory
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
