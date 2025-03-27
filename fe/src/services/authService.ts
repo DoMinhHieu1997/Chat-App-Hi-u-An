@@ -1,18 +1,19 @@
-const mainUrl = "http://localhost:5000/api"
+import instance from "./instance";
+import { isAxiosError } from "axios";
 
-export const registerService = async (name:string, email:string, password:string) => {
-    try {
-        const response = await fetch(mainUrl+"/users/register", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ name, email, password }),
-        });
-  
-        if (!response.ok) throw new Error("Đăng ký thất bại!");
-    
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        throw error;
+export const registerService = async (name: string, email: string, password: string) => {
+  try {
+    const { data } = await instance.post(`users/register`, {
+      name,
+      email,
+      password,
+    });
+    return data
+  } catch (error) {
+    if (isAxiosError(error)) {
+      console.log(error.response?.data.message);
+    } else {
+      console.log("An unexpected error occurred");
     }
+  }
 };

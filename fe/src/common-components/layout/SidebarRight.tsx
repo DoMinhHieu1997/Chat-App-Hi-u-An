@@ -2,7 +2,7 @@ import React from 'react'
 
 const SidebarRight = () => {
     return (
-        <aside className="w-80 bg-gray-900 border-l border-gray-800 p-4">
+        <aside className="w-80 h-screen bg-gray-900 border-l border-gray-800 p-4">
             <div className="flex items-center justify-between mb-6">
                 <h2 className="text-lg font-bold">Group Info</h2>
                 <button className="text-gray-400 hover:text-gray-300">

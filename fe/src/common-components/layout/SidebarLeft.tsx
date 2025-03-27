@@ -2,7 +2,7 @@ import React from 'react'
 
 const SidebarLeft = () => {
     return (
-        <aside className="w-20 bg-gray-900 flex flex-col items-center py-6 border-r border-gray-800">
+        <aside className="h-screen w-20 bg-gray-900 flex flex-col items-center py-6 border-r border-gray-800">
             <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center mb-8">
                 <svg
                     className="w-8 h-8 text-white"

@@ -1,35 +1,29 @@
 import { useState } from "react";
 import { registerService } from "../../services/authService";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
-
-  const [username, setUserName] = useState('');
-  const [userPwd, setUserPwd] = useState('');
-  const [userEmail, setUserEmail] = useState('');
-  const [enterEmailError, setEnterEmailError] = useState('');
+  const [username, setUserName] = useState("");
+  const [userPwd, setUserPwd] = useState("");
+  const [userEmail, setUserEmail] = useState("");
+  const [enterEmailError, setEnterEmailError] = useState("");
   const [signupLoading, setSignupLoading] = useState(false);
-
-  const validateEmail = (value:string) => {
+  const navigate = useNavigate()
+  const validateEmail = (value: string) => {
     setUserEmail(value);
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    setEnterEmailError(regex.test(value) ? '' : 'Email không hợp lệ!');
+    setEnterEmailError(regex.test(value) ? "" : "Email không hợp lệ!");
   };
-  
-  const handleUserSignUp = async (e:any) => {
+
+  const handleUserSignUp = async (e: any) => {
     e.preventDefault();
     setSignupLoading(true);
-
-    try {
-      const registerResponse = await registerService(username, userEmail, userPwd);
-
-      if (registerResponse)
-      console.log(registerResponse);
-      
-    } catch (err) {
-      alert('Đăng ký không thành công');
+    const data = await registerService(username, userEmail, userPwd);
+    if (data) {
+      navigate('/')
     }
-  }
-    
+  };
+
   return (
     <section className="bg-white">
       <div className="grid grid-cols-1 h-screen lg:grid-cols-2">
@@ -149,7 +143,12 @@ const Register = () => {
                 Đăng nhập
               </a>
             </p>
-            <form onSubmit={handleUserSignUp} action="#" method="POST" className="mt-8">
+            <form
+              onSubmit={handleUserSignUp}
+              action="#"
+              method="POST"
+              className="mt-8"
+            >
               <div className="space-y-5">
                 <div>
                   <label
@@ -222,10 +221,7 @@ const Register = () => {
                       className="block w-full py-4 pl-10 pr-4 text-black placeholder-gray-500 transition-all duration-200 border border-gray-200 rounded-md bg-gray-50 focus:outline-none focus:border-blue-600 focus:bg-white caret-blue-600"
                     />
                   </div>
-                  <label
-                    htmlFor=""
-                    className="text-sm font-light text-red-500"
-                  >
+                  <label htmlFor="" className="text-sm font-light text-red-500">
                     {enterEmailError}
                   </label>
                 </div>
