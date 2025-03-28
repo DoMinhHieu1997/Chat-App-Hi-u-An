@@ -3,13 +3,19 @@ const bcrypt = require('bcryptjs');
 
 // Đăng ký người dùng mới
 exports.registerUser = async (req, res) => {
+
     try {
       const { name, email, password } = req.body;
+
+      if (!name || !email || !password) {
+        return res.status(200).json({ status: 0, message: "Vui lòng điền đầy đủ thông tin!" });
+      }
   
       // Kiểm tra xem email đã tồn tại chưa
       const existingUser = await User.findOne({ email });
+
       if (existingUser) {
-        return res.status(400).json({ message: 'Email đã được sử dụng' });
+        return res.status(200).json({ status: 0, message: 'Email đã được sử dụng!' });
       }
   
       // Mã hóa mật khẩu trước khi lưu vào database
@@ -19,7 +25,13 @@ exports.registerUser = async (req, res) => {
       const newUser = new User({ name, email, password: hashedPassword });
       await newUser.save();
   
-      res.status(201).json({ message: 'Đăng ký thành công', userId: newUser._id });
+      res.status(201).json({response: {
+        data: { 
+          status: 1,
+          message: 'Đăng ký thành công', 
+          userId: newUser._id 
+        }
+      }});
     } catch (error) {
       res.status(500).json({ message: 'Lỗi server', error });
     }

@@ -1,5 +1,4 @@
 import instance from "./instance";
-import { isAxiosError } from "axios";
 
 export const registerService = async (name: string, email: string, password: string) => {
   try {
@@ -8,12 +7,8 @@ export const registerService = async (name: string, email: string, password: str
       email,
       password,
     });
-    return data
+    return data;
   } catch (error) {
-    if (isAxiosError(error)) {
-      console.log(error.response?.data.message);
-    } else {
-      console.log("An unexpected error occurred");
-    }
+    return error;
   }
 };

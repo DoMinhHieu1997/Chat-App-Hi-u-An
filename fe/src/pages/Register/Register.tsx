@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { registerService } from "../../services/authService";
 import { useNavigate } from "react-router-dom";
+import { isAxiosError } from "axios";
+import { Alert } from "antd";
 
 const Register = () => {
   const [username, setUserName] = useState("");
@@ -8,7 +10,10 @@ const Register = () => {
   const [userEmail, setUserEmail] = useState("");
   const [enterEmailError, setEnterEmailError] = useState("");
   const [signupLoading, setSignupLoading] = useState(false);
-  const navigate = useNavigate()
+  const [error, setError] = useState("");
+
+  const navigate = useNavigate();
+
   const validateEmail = (value: string) => {
     setUserEmail(value);
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -18,10 +23,17 @@ const Register = () => {
   const handleUserSignUp = async (e: any) => {
     e.preventDefault();
     setSignupLoading(true);
-    const data = await registerService(username, userEmail, userPwd);
-    if (data) {
-      navigate('/')
-    }
+    try {
+      const data = await registerService(username, userEmail, userPwd);
+
+      const resgisterRes = data?.response?.data;
+
+      if (resgisterRes?.status > 0) {
+        navigate("/");
+      } else {
+        setError(resgisterRes.message);
+      }
+    } catch (error) {}
   };
 
   return (
@@ -130,6 +142,9 @@ const Register = () => {
         </div>
         <div className="flex items-center justify-center px-4 py-10 bg-white sm:px-6 lg:px-8 sm:py-16 lg:py-24">
           <div className="xl:w-full xl:max-w-sm 2xl:max-w-md xl:mx-auto">
+            {
+              error != "" ? <Alert message={error} type="error" showIcon closable /> : ''
+            }
             <h2 className="text-3xl font-bold leading-tight text-black sm:text-4xl">
               Sign up to Celebration
             </h2>
